@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAIHL Player Comparison</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="compare.css">
+</head>
+<body>
+  <div class="arena-grid" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <a class="brand" href="index.html">MAIHL</a>
+    <div class="nav-actions" aria-label="Primary navigation">
+      <a class="nav-button" href="index.html#home">Home</a>
+      <a class="nav-button" href="index.html#all-time-stats">All Time Stats</a>
+      <a class="nav-button" href="index.html#live-games">Live Games</a>
+      <a class="nav-button" href="schedule.html">Schedule</a>
+      <a class="nav-button" href="players.html">Players</a>
+    </div>
+  </nav>
+
+  <main class="page-shell compare-shell">
+    <section class="compare-card">
+      <div class="compare-topline">
+        <div>
+          <p class="eyebrow">Rivalry System</p>
+          <h1>Player Comparison</h1>
+        </div>
+        <div class="compare-controls">
+          <select id="player-a"></select>
+          <strong>VS</strong>
+          <select id="player-b"></select>
+        </div>
+      </div>
+
+      <a class="nav-button active compare-home" href="index.html#home">Back to Home</a>
+      <div class="compare-result" id="compare-result"></div>
+    </section>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="compare.js"></script>
+</body>
+</html>

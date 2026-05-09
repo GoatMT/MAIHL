@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAIHL Player Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+  <div class="arena-grid" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <a class="brand" href="index.html">MAIHL</a>
+    <div class="nav-actions" aria-label="Primary navigation">
+      <a class="nav-button" href="index.html#home">Home</a>
+      <a class="nav-button" href="index.html#all-time-stats">All Time Stats</a>
+      <a class="nav-button" href="index.html#live-games">Live Games</a>
+      <a class="nav-button" href="index.html#schedule">Schedule</a>
+    </div>
+  </nav>
+
+  <main class="page-shell profile-shell">
+    <section class="profile-hero">
+      <div>
+        <p class="eyebrow">Player Profile</p>
+        <h1 id="player-name">Player</h1>
+      </div>
+      <a class="nav-button active" href="index.html#all-time-stats">Back to Leaderboard</a>
+    </section>
+
+    <section class="profile-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Career Stats</p>
+          <h2>Full Stats</h2>
+        </div>
+      </div>
+      <div class="profile-stat-grid" id="career-stats"></div>
+    </section>
+
+    <section class="profile-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Game History</p>
+          <h2>Recent Games</h2>
+        </div>
+      </div>
+      <div class="profile-history" id="game-history"></div>
+    </section>
+
+  </main>
+
+  <script src="data.js"></script>
+  <script src="profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAIHL Game Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="game.css">
+</head>
+<body>
+  <div class="arena-grid" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <a class="brand" href="index.html">MAIHL</a>
+    <div class="nav-actions" aria-label="Primary navigation">
+      <a class="nav-button" href="index.html#home">Home</a>
+      <a class="nav-button" href="index.html#all-time-stats">All Time Stats</a>
+      <a class="nav-button" href="index.html#live-games">Live Games</a>
+      <a class="nav-button active" href="index.html#schedule">Schedule</a>
+    </div>
+  </nav>
+
+  <main class="page-shell game-shell">
+    <section class="game-hero">
+      <div>
+        <p class="eyebrow" id="game-date">Game Center</p>
+        <h1 id="game-title">Game</h1>
+      </div>
+      <a class="nav-button active" href="index.html#schedule">Back to Schedule</a>
+    </section>
+
+    <section class="game-summary-card">
+      <div class="scoreboard-panel">
+        <article class="score-team" id="team-one-card">
+          <span>Home</span>
+          <strong id="player-one">TBD</strong>
+          <b id="player-one-score">0</b>
+        </article>
+        <div class="score-divider">
+          <span>Final</span>
+          <strong>VS</strong>
+        </div>
+        <article class="score-team" id="team-two-card">
+          <span>Away</span>
+          <strong id="player-two">TBD</strong>
+          <b id="player-two-score">0</b>
+        </article>
+      </div>
+      <div class="winner-panel">
+        <span>Winner</span>
+        <strong id="game-winner">TBD</strong>
+      </div>
+    </section>
+
+    <section class="game-prediction-card" id="game-prediction-card" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Upcoming Game</p>
+          <h2>Game Prediction</h2>
+        </div>
+        <span class="live-pill">Win Chance</span>
+      </div>
+      <div class="prediction-list" id="game-prediction-list"></div>
+    </section>
+
+    <section class="scoring-card">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Goal Timeline</p>
+          <h2>Scoring Breakdown</h2>
+        </div>
+        <span class="live-pill" id="goal-count">0 Goals</span>
+      </div>
+      <div class="goal-list" id="goal-list"></div>
+    </section>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

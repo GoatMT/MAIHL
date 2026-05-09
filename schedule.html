@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAIHL Schedule</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="arena-grid" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <a class="brand" href="index.html">MAIHL</a>
+    <div class="nav-actions" aria-label="Primary navigation">
+      <a class="nav-button" href="index.html#home">Home</a>
+      <a class="nav-button" href="index.html#all-time-stats">All Time Stats</a>
+      <a class="nav-button" href="index.html#live-games">Live Games</a>
+      <a class="nav-button active" href="schedule.html">Schedule</a>
+      <a class="nav-button" href="players.html">Players</a>
+    </div>
+  </nav>
+
+  <main class="page-shell">
+    <section id="schedule" class="schedule-card" aria-labelledby="schedule-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Games Played</p>
+          <h1 id="schedule-title">Game Schedule</h1>
+        </div>
+        <span class="live-pill">7 Games</span>
+      </div>
+      <div class="schedule-list" id="schedule-list"></div>
+    </section>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="schedule.js"></script>
+</body>
+</html>
