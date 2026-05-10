@@ -18,7 +18,8 @@
       <a class="nav-button active" href="#home">Home</a>
       <a class="nav-button" href="#all-time-stats">All Time Stats</a>
       <a class="nav-button" href="#live-games">Live Games</a>
-      <a class="nav-button" href="#schedule">Schedule</a>
+      <a class="nav-button" href="schedule.html">Schedule</a>
+      <a class="nav-button" href="players.html">Players</a>
     </div>
   </nav>
 
@@ -38,6 +39,7 @@
             <tr>
               <th>Rank</th>
               <th>Player</th>
+              <th>Jersey</th>
               <th><button type="button" class="sort-button" data-sort="gp">GP</button></th>
               <th><button type="button" class="sort-button" data-sort="wins">Wins</button></th>
               <th><button type="button" class="sort-button" data-sort="goals">Goals</button></th>
@@ -45,64 +47,10 @@
               <th><button type="button" class="sort-button" data-sort="losses">Losses</button></th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td><span class="rank rank-one">1</span></td>
-              <td><a class="player-link" href="player.html?name=Muhummud">Muhummud Teli</a></td>
-              <td>2</td>
-              <td>1</td>
-              <td>13</td>
-              <td>0</td>
-              <td>1</td>
-            </tr>
-            <tr>
-              <td><span class="rank">2</span></td>
-              <td><a class="player-link" href="player.html?name=Ahmed">Ahmed Kasujee</a></td>
-              <td>2</td>
-              <td>1</td>
-              <td>13</td>
-              <td>0</td>
-              <td>1</td>
-            </tr>
-            <tr>
-              <td><span class="rank">3</span></td>
-              <td><a class="player-link" href="player.html?name=Bilal">Bilal Govani</a></td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td><span class="rank">4</span></td>
-              <td><a class="player-link" href="player.html?name=Ismail">Ismail Kayka</a></td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td><span class="rank">5</span></td>
-              <td><a class="player-link" href="player.html?name=Husaifa">Husaifa Khotwa</a></td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td><span class="rank">6</span></td>
-              <td><a class="player-link" href="player.html?name=Mohammed">Mohammed Taliya</a></td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-            </tr>
-          </tbody>
+          <tbody id="leaderboard-body"></tbody>
         </table>
       </div>
+      <a class="compare-button" href="compare.html">Compare</a>
     </section>
 
     <section id="live-games" class="performance-card" aria-labelledby="performance-title">
@@ -117,31 +65,31 @@
       <div class="lead-stats">
         <article class="metric-card">
           <h3>Most Saves</h3>
-          <strong>0</strong>
-          <span>TBD</span>
+          <strong>22</strong>
+          <span>Ahmed (in 2 Games)</span>
         </article>
         <article class="metric-card">
           <h3>Most Shots</h3>
-          <strong>0</strong>
-          <span>TBD</span>
+          <strong>35</strong>
+          <span>Muhummud (in 2 Games)</span>
         </article>
         <article class="metric-card">
           <h3>Most Goals</h3>
           <strong>13</strong>
-          <span>MT / AK</span>
+          <span>Muhummud / Ahmed (in 2 Games)</span>
         </article>
       </div>
 
       <div class="efficiency-stats">
         <article class="metric-card metric-card-wide">
           <h3>Best Shooting %</h3>
-          <strong>0.0%</strong>
-          <span>TBD</span>
+          <strong>39.4%</strong>
+          <span>Ahmed (in 2 Games)</span>
         </article>
         <article class="metric-card metric-card-wide">
           <h3>Best Save %</h3>
-          <strong>.000</strong>
-          <span>TBD</span>
+          <strong>.629</strong>
+          <span>Ahmed (in 2 Games)</span>
         </article>
       </div>
 
@@ -150,19 +98,19 @@
         <div class="snapshot-list">
           <div>
             <strong>Muhummud Teli</strong>
-            <span>Goals: 13 - Shots: 0 - Save %: .000</span>
+            <span>Goals: 13 - Shots: 35</span>
           </div>
           <div>
             <strong>Ahmed Kasujee</strong>
-            <span>Goals: 13 - Shots: 0 - Save %: .000</span>
+            <span>Goals: 13 - Shots: 33</span>
           </div>
           <div>
             <strong>Bilal Govani</strong>
-            <span>Goals: 0 - Shots: 0 - Save %: .000</span>
+            <span>Goals: 0 - Shots: 0</span>
           </div>
           <div>
             <strong>Ismail Kayka</strong>
-            <span>Goals: 0 - Shots: 0 - Save %: .000</span>
+            <span>Goals: 0 - Shots: 0</span>
           </div>
         </div>
       </div>
@@ -171,17 +119,17 @@
         <h3>Goalie Performance</h3>
         <div class="goalie-row">
           <strong>Muhummud Teli</strong>
-          <span>Save %: .000</span>
-          <span>Saves: 0</span>
-          <span>GAA: 0.00</span>
-          <span>GA: 0</span>
+          <span>Save %: .606</span>
+          <span>Saves: 20</span>
+          <span>GAA: 6.50</span>
+          <span>GA: 13</span>
         </div>
         <div class="goalie-row">
           <strong>Ahmed Kasujee</strong>
-          <span>Save %: .000</span>
-          <span>Saves: 0</span>
-          <span>GAA: 0.00</span>
-          <span>GA: 0</span>
+          <span>Save %: .629</span>
+          <span>Saves: 22</span>
+          <span>GAA: 6.50</span>
+          <span>GA: 13</span>
         </div>
       </div>
     </section>
@@ -201,102 +149,23 @@
     <section class="awards-card" aria-labelledby="awards-title">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">League Awards</p>
-          <h2 id="awards-title">Awards Section</h2>
+          <p class="eyebrow">League Records</p>
+          <h2 id="awards-title">Game Winning Stats</h2>
         </div>
         <span class="live-pill">Game Records</span>
       </div>
       <div class="awards-grid" id="awards-grid"></div>
     </section>
 
-    <section id="schedule" class="schedule-card" aria-labelledby="schedule-title">
+    <section id="injuries" class="injuries-card" aria-labelledby="injuries-title">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Games Played</p>
-          <h2 id="schedule-title">Game Schedule</h2>
+          <p class="eyebrow">Health Report</p>
+          <h2 id="injuries-title">Injuries</h2>
         </div>
-        <span class="live-pill">7 Games</span>
+        <span class="live-pill">Fully Healed</span>
       </div>
-
-      <div class="schedule-list">
-        <article class="schedule-item">
-          <span class="game-number">Game 1</span>
-          <div class="game-details">
-            <strong>November 15, 2025</strong>
-            <span>Ahmed vs Muhummud</span>
-          </div>
-          <span class="final-score">Muhummud 9 - 6 Ahmed</span>
-          <span class="winner">Winner: Muhummud</span>
-          <span class="game-status">Played</span>
-          <a class="game-center-button" href="game.html?id=1">Game Center</a>
-        </article>
-        <article class="schedule-item">
-          <span class="game-number">Game 2</span>
-          <div class="game-details">
-            <strong>October 18, 2025</strong>
-            <span>Muhummud vs Ahmed</span>
-          </div>
-          <span class="final-score">Ahmed 7 - 4 Muhummud</span>
-          <span class="winner">Winner: Ahmed</span>
-          <span class="game-status">Played</span>
-          <a class="game-center-button" href="game.html?id=2">Game Center</a>
-        </article>
-        <article class="schedule-item">
-          <span class="game-number">Game 3</span>
-          <div class="game-details">
-            <strong>Date TBD</strong>
-            <span>Muhummud vs Ahmed</span>
-          </div>
-          <span class="final-score">TBD</span>
-          <span class="winner">Winner: TBD</span>
-          <span class="game-status upcoming">Upcoming</span>
-          <a class="game-center-button" href="game.html?id=3">Game Center</a>
-        </article>
-        <article class="schedule-item">
-          <span class="game-number">Game 4</span>
-          <div class="game-details">
-            <strong>Date TBD</strong>
-            <span>Matchup TBD</span>
-          </div>
-          <span class="final-score">TBD</span>
-          <span class="winner">Winner: TBD</span>
-          <span class="game-status upcoming">Upcoming</span>
-          <a class="game-center-button" href="game.html?id=4">Game Center</a>
-        </article>
-        <article class="schedule-item">
-          <span class="game-number">Game 5</span>
-          <div class="game-details">
-            <strong>Date TBD</strong>
-            <span>Matchup TBD</span>
-          </div>
-          <span class="final-score">TBD</span>
-          <span class="winner">Winner: TBD</span>
-          <span class="game-status upcoming">Upcoming</span>
-          <a class="game-center-button" href="game.html?id=5">Game Center</a>
-        </article>
-        <article class="schedule-item">
-          <span class="game-number">Game 6</span>
-          <div class="game-details">
-            <strong>Date TBD</strong>
-            <span>Matchup TBD</span>
-          </div>
-          <span class="final-score">TBD</span>
-          <span class="winner">Winner: TBD</span>
-          <span class="game-status upcoming">Upcoming</span>
-          <a class="game-center-button" href="game.html?id=6">Game Center</a>
-        </article>
-        <article class="schedule-item">
-          <span class="game-number">Game 7</span>
-          <div class="game-details">
-            <strong>Date TBD</strong>
-            <span>Matchup TBD</span>
-          </div>
-          <span class="final-score">TBD</span>
-          <span class="winner">Winner: TBD</span>
-          <span class="game-status upcoming">Upcoming</span>
-          <a class="game-center-button" href="game.html?id=7">Game Center</a>
-        </article>
-      </div>
+      <div class="injury-list" id="injury-list"></div>
     </section>
   </main>
 

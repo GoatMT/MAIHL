@@ -19,7 +19,8 @@
       <a class="nav-button" href="index.html#home">Home</a>
       <a class="nav-button" href="index.html#all-time-stats">All Time Stats</a>
       <a class="nav-button" href="index.html#live-games">Live Games</a>
-      <a class="nav-button active" href="index.html#schedule">Schedule</a>
+      <a class="nav-button active" href="schedule.html">Schedule</a>
+      <a class="nav-button" href="players.html">Players</a>
     </div>
   </nav>
 
@@ -29,7 +30,10 @@
         <p class="eyebrow" id="game-date">Game Center</p>
         <h1 id="game-title">Game</h1>
       </div>
-      <a class="nav-button active" href="index.html#schedule">Back to Schedule</a>
+      <div class="game-hero-actions">
+        <button type="button" class="watch-game-button" disabled>Watch Game</button>
+        <a class="nav-button active" href="schedule.html">Back to Schedule</a>
+      </div>
     </section>
 
     <section class="game-summary-card">
@@ -55,15 +59,15 @@
       </div>
     </section>
 
-    <section class="game-prediction-card" id="game-prediction-card" hidden>
+    <section class="game-stats-card" id="game-stats-card">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Upcoming Game</p>
-          <h2>Game Prediction</h2>
+          <p class="eyebrow" id="game-stats-eyebrow">Game Stats</p>
+          <h2 id="game-stats-title">Stat Matchup</h2>
         </div>
-        <span class="live-pill">Win Chance</span>
+        <span class="live-pill" id="game-stats-pill">Versus</span>
       </div>
-      <div class="prediction-list" id="game-prediction-list"></div>
+      <div class="game-stat-board" id="game-stat-board"></div>
     </section>
 
     <section class="scoring-card">

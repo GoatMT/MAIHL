@@ -19,7 +19,8 @@
       <a class="nav-button" href="index.html#home">Home</a>
       <a class="nav-button" href="index.html#all-time-stats">All Time Stats</a>
       <a class="nav-button" href="index.html#live-games">Live Games</a>
-      <a class="nav-button" href="index.html#schedule">Schedule</a>
+      <a class="nav-button" href="schedule.html">Schedule</a>
+      <a class="nav-button" href="players.html">Players</a>
     </div>
   </nav>
 
@@ -28,8 +29,12 @@
       <div>
         <p class="eyebrow">Player Profile</p>
         <h1 id="player-name">Player</h1>
+        <div class="profile-badges">
+          <span id="player-number">#--</span>
+          <span id="player-overall">N/A OVR</span>
+        </div>
       </div>
-      <a class="nav-button active" href="index.html#all-time-stats">Back to Leaderboard</a>
+      <a class="nav-button active" href="index.html#home">Back to Home</a>
     </section>
 
     <section class="profile-section">
@@ -50,6 +55,27 @@
         </div>
       </div>
       <div class="profile-history" id="game-history"></div>
+    </section>
+
+    <section class="profile-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Health Report</p>
+          <h2>Injuries</h2>
+        </div>
+      </div>
+      <div class="profile-history" id="player-injuries"></div>
+    </section>
+
+    <section class="profile-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Award Cycle</p>
+          <h2 id="profile-awards-title">Trophies</h2>
+        </div>
+      </div>
+      <div class="profile-awards" id="profile-awards"></div>
+      <div class="award-history" id="award-history"></div>
     </section>
 
   </main>

@@ -7,13 +7,38 @@ slots.forEach((slot) => {
   });
 });
 
+const leagueData = window.MAIHL_DATA;
+
+function getPlayer(key) {
+  return leagueData.players.find((player) => player.key === key);
+}
+
 function getLeader(players, stat) {
   return [...players].sort((a, b) => b[stat] - a[stat])[0];
 }
 
+function parseGameDate(game) {
+  const time = Date.parse(game.date);
+  return Number.isNaN(time) ? 0 : time;
+}
+
+function sortByRecency(a, b) {
+  const dateDifference = parseGameDate(b) - parseGameDate(a);
+
+  if (dateDifference) {
+    return dateDifference;
+  }
+
+  return Number.parseInt(b.gameId || "0", 10) - Number.parseInt(a.gameId || "0", 10);
+}
+
+function getGoalScore(goal) {
+  const [first, second] = goal.score.split("-").map((value) => Number.parseInt(value, 10));
+  return { first, second };
+}
+
 function renderNewsFeed() {
   const newsList = document.querySelector("#news-list");
-  const leagueData = window.MAIHL_DATA;
 
   if (!newsList || !leagueData) {
     return;
@@ -21,30 +46,42 @@ function renderNewsFeed() {
 
   const goalsLeader = getLeader(leagueData.players, "goals");
   const shotsLeader = getLeader(leagueData.players, "shots");
+  const savesLeader = getLeader(leagueData.players, "saves");
   const latestPlayedGame = [...leagueData.games].reverse().find((game) => game.status === "Played");
-  const latestWinner = leagueData.players.find((player) => player.shortName === latestPlayedGame?.winner);
   const upcomingCount = leagueData.games.filter((game) => game.status === "Upcoming").length;
 
   const headlines = [
     {
-      title: "Trade Rumor",
-      body: "League sources say two mystery players have discussed a possible blockbuster practice partnership."
+      title: "Game 3 Watch",
+      body: "Muhummud and Ahmed are lined up again, with Game 3 expected to decide early-season momentum."
     },
     {
-      title: "Arena Buzz",
-      body: "The next MAIHL night is expected to feature new line combinations and a louder pre-game intro."
+      title: "Goal Race Locked",
+      body: `${goalsLeader.shortName} is tied at the top of the goal race, keeping the scoring title wide open.`
     },
     {
-      title: "Power Ranking Watch",
-      body: `${goalsLeader.shortName} and ${shotsLeader.shortName} are drawing attention after a hot start on the stat sheet.`
+      title: "Shot Pressure Report",
+      body: `${shotsLeader.shortName} leads the league in shots, giving the analytics board a clear pressure marker.`
     },
     {
-      title: "Locker Room Note",
-      body: "Players are reportedly pushing for a special rivalry game with brighter jerseys and walkout music."
+      title: "Goalie Spotlight",
+      body: `${savesLeader.shortName} owns the current saves lead and is tracking as the early Iron Wall favorite.`
     },
     {
-      title: "Scouting Report",
-      body: "Coaches believe the next breakout performance could come from a player currently sitting outside the top two."
+      title: "Health Update",
+      body: "Ahmed's right wrist and Muhummud's left foot cramp are both listed as fully healed."
+    },
+    {
+      title: "Schedule Desk",
+      body: `${upcomingCount} upcoming games remain on the MAIHL board, with several matchups still marked TBD.`
+    },
+    {
+      title: "Game Center Upgrade",
+      body: `${latestPlayedGame?.game || "The latest game"} now includes full scoring, per-game stats, and winner details.`
+    },
+    {
+      title: "Rivalry Signal",
+      body: "The Muhummud-Ahmed matchup is becoming the main storyline after two split results."
     }
   ];
 
@@ -60,146 +97,192 @@ function renderNewsFeed() {
     .join("");
 }
 
-renderNewsFeed();
+function getLeadRecords(games) {
+  const records = [];
 
-function getGoalScore(goal) {
-  const [home, away] = goal.score.split("-").map((value) => Number.parseInt(value, 10));
-  return { home, away };
+  games
+    .filter((game) => game.status === "Played" && game.goals.length)
+    .forEach((game) => {
+      game.goals.forEach((goal) => {
+        const score = getGoalScore(goal);
+        const leadValue = Math.abs(score.first - score.second);
+
+        if (!leadValue) {
+          return;
+        }
+
+        const leader = score.first > score.second ? game.scoreOrder[0] : game.scoreOrder[1];
+        records.push({
+          game: game.game,
+          gameId: game.id,
+          date: game.date,
+          player: leader,
+          value: leadValue,
+          score: `${score.first} - ${score.second}`
+        });
+      });
+    });
+
+  return records;
 }
 
-function getGameAwards(games) {
-  const playedGames = games.filter((game) => game.status === "Played" && game.goals.length);
-  let biggestLeadValue = 0;
-  let biggestComebackValue = 0;
-  const biggestLeads = [];
-  const biggestComebacks = [];
+function getComebackRecords(games) {
+  const records = [];
 
-  playedGames.forEach((game) => {
-    const maxDeficits = {};
-    game.players.forEach((player) => {
-      maxDeficits[player] = { value: 0, score: "0 - 0" };
+  games
+    .filter((game) => game.status === "Played" && game.goals.length)
+    .forEach((game) => {
+      const [firstPlayer, secondPlayer] = game.scoreOrder;
+      const maxDeficits = {
+        [firstPlayer]: { value: 0, score: "0 - 0" },
+        [secondPlayer]: { value: 0, score: "0 - 0" }
+      };
+      const bestCompleted = {};
+
+      game.goals.forEach((goal) => {
+        const score = getGoalScore(goal);
+        const formattedScore = `${score.first} - ${score.second}`;
+
+        if (score.first < score.second) {
+          const deficit = score.second - score.first;
+          if (deficit > maxDeficits[firstPlayer].value) {
+            maxDeficits[firstPlayer] = { value: deficit, score: formattedScore };
+          }
+        }
+
+        if (score.second < score.first) {
+          const deficit = score.first - score.second;
+          if (deficit > maxDeficits[secondPlayer].value) {
+            maxDeficits[secondPlayer] = { value: deficit, score: formattedScore };
+          }
+        }
+
+        if (score.first >= score.second && maxDeficits[firstPlayer].value > 0) {
+          const previous = bestCompleted[firstPlayer];
+          if (!previous || maxDeficits[firstPlayer].value > previous.value) {
+            bestCompleted[firstPlayer] = {
+              game: game.game,
+              gameId: game.id,
+              date: game.date,
+              player: firstPlayer,
+              value: maxDeficits[firstPlayer].value,
+              score: maxDeficits[firstPlayer].score,
+              recoveredTo: formattedScore
+            };
+          }
+        }
+
+        if (score.second >= score.first && maxDeficits[secondPlayer].value > 0) {
+          const previous = bestCompleted[secondPlayer];
+          if (!previous || maxDeficits[secondPlayer].value > previous.value) {
+            bestCompleted[secondPlayer] = {
+              game: game.game,
+              gameId: game.id,
+              date: game.date,
+              player: secondPlayer,
+              value: maxDeficits[secondPlayer].value,
+              score: maxDeficits[secondPlayer].score,
+              recoveredTo: formattedScore
+            };
+          }
+        }
+      });
+
+      records.push(...Object.values(bestCompleted));
     });
 
-    game.goals.forEach((goal) => {
-      const score = getGoalScore(goal);
-      const leadValue = Math.abs(score.home - score.away);
-      const formattedScore = `${score.home} - ${score.away}`;
-
-      if (leadValue > 0) {
-        const leader = score.home > score.away ? game.players[0] : game.players[1];
-        const leadRecord = { game: game.game, player: leader, value: leadValue, score: formattedScore };
-
-        if (leadValue > biggestLeadValue) {
-          biggestLeadValue = leadValue;
-          biggestLeads.length = 0;
-          biggestLeads.push(leadRecord);
-        } else if (leadValue === biggestLeadValue) {
-          biggestLeads.push(leadRecord);
-        }
-      }
-
-      if (score.home < score.away) {
-        const deficitValue = score.away - score.home;
-        if (deficitValue > maxDeficits[game.players[0]].value) {
-          maxDeficits[game.players[0]] = { value: deficitValue, score: formattedScore };
-        }
-      }
-
-      if (score.away < score.home) {
-        const deficitValue = score.home - score.away;
-        if (deficitValue > maxDeficits[game.players[1]].value) {
-          maxDeficits[game.players[1]] = { value: deficitValue, score: formattedScore };
-        }
-      }
-
-      if (score.home >= score.away && maxDeficits[game.players[0]].value > 0) {
-        const comeback = {
-          game: game.game,
-          player: game.players[0],
-          value: maxDeficits[game.players[0]].value,
-          score: maxDeficits[game.players[0]].score,
-          recoveredTo: formattedScore
-        };
-
-        if (comeback.value > biggestComebackValue) {
-          biggestComebackValue = comeback.value;
-          biggestComebacks.length = 0;
-          biggestComebacks.push(comeback);
-        } else if (comeback.value === biggestComebackValue) {
-          biggestComebacks.push(comeback);
-        }
-      }
-
-      if (score.away >= score.home && maxDeficits[game.players[1]].value > 0) {
-        const comeback = {
-          game: game.game,
-          player: game.players[1],
-          value: maxDeficits[game.players[1]].value,
-          score: maxDeficits[game.players[1]].score,
-          recoveredTo: formattedScore
-        };
-
-        if (comeback.value > biggestComebackValue) {
-          biggestComebackValue = comeback.value;
-          biggestComebacks.length = 0;
-          biggestComebacks.push(comeback);
-        } else if (comeback.value === biggestComebackValue) {
-          biggestComebacks.push(comeback);
-        }
-      }
-    });
-  });
-
-  return { biggestLeadValue, biggestLeads, biggestComebackValue, biggestComebacks };
+  return records;
 }
 
 function renderAwards() {
   const awardsGrid = document.querySelector("#awards-grid");
-  const leagueData = window.MAIHL_DATA;
 
   if (!awardsGrid || !leagueData) {
     return;
   }
 
-  const { biggestLeadValue, biggestLeads, biggestComebackValue, biggestComebacks } = getGameAwards(leagueData.games);
-  const leadDetails = biggestLeads
-    .map((lead) => `${lead.player} in ${lead.game} (${lead.score})`)
-    .join(" / ");
-  const comebackDetails = biggestComebacks
-    .map((comeback) => `${comeback.player} in ${comeback.game} from (${comeback.score}) to (${comeback.recoveredTo})`)
-    .join(" / ");
+  const leadRecords = getLeadRecords(leagueData.games);
+  const biggestLeadValue = Math.max(0, ...leadRecords.map((record) => record.value));
+  const biggestLeadRecords = leadRecords
+    .filter((record) => record.value === biggestLeadValue)
+    .sort(sortByRecency);
+
+  const comebackRecords = getComebackRecords(leagueData.games);
+  const biggestComebackValue = Math.max(0, ...comebackRecords.map((record) => record.value));
+  const latestBiggestComebacks = comebackRecords
+    .filter((record) => record.value === biggestComebackValue && record.value > 0)
+    .sort(sortByRecency)
+    .slice(0, 3);
+  const comebackLabels = ["Latest", "2nd Latest", "3rd Latest"];
+  const comebackLines = comebackLabels
+    .map((label, index) => {
+      const comeback = latestBiggestComebacks[index];
+
+      if (!comeback) {
+        return `<p><b>${label}:</b> No tied biggest comeback yet</p>`;
+      }
+
+      return `<p><b>${label}:</b> ${comeback.player} in ${comeback.game} from (${comeback.score}) to (${comeback.recoveredTo})</p>`;
+    })
+    .join("");
 
   awardsGrid.innerHTML = `
     <article class="award-item">
       <span>Biggest Lead</span>
       <strong>${biggestLeadValue} Goals</strong>
-      <p class="prediction-note">${leadDetails}</p>
+      <p class="prediction-note">
+        ${biggestLeadRecords.map((lead) => `${lead.player} in ${lead.game} (${lead.score})`).join(" / ")}
+      </p>
     </article>
     <article class="award-item">
       <span>Biggest Comeback</span>
       <strong>${biggestComebackValue} Goal${biggestComebackValue === 1 ? "" : "s"}</strong>
-      <p class="prediction-note">${comebackDetails}</p>
+      <div class="award-list">
+        ${comebackLines}
+      </div>
     </article>
   `;
 }
 
-renderAwards();
+function renderInjuries() {
+  const injuryList = document.querySelector("#injury-list");
+
+  if (!injuryList || !leagueData) {
+    return;
+  }
+
+  injuryList.innerHTML = leagueData.injuries
+    .map(
+      (injury) => `
+        <article class="injury-item">
+          <span>${injury.label}</span>
+          <strong>${injury.player}: ${injury.injury}</strong>
+          <p>${injury.game} • ${injury.date}</p>
+          <em>${injury.status}</em>
+        </article>
+      `
+    )
+    .join("");
+}
 
 function setupLeaderboardSorting() {
-  const leaderboardBody = document.querySelector(".leaderboard-card tbody");
+  const leaderboardBody = document.querySelector("#leaderboard-body");
   const sortButtons = document.querySelectorAll(".sort-button");
-  const leagueData = window.MAIHL_DATA;
 
-  if (!leaderboardBody || !sortButtons.length || !leagueData) {
+  if (!leaderboardBody || !leagueData) {
     return;
   }
 
   const rankClasses = ["rank-one", "", "", "", "", ""];
 
-  function renderLeaderboard(sortKey) {
+  function renderLeaderboard(sortKey = null) {
     const sortedPlayers = [...leagueData.players].sort((a, b) => {
+      if (!sortKey) {
+        return leagueData.players.indexOf(a) - leagueData.players.indexOf(b);
+      }
+
       const statDifference = b[sortKey] - a[sortKey];
-      return statDifference || a.fullName.localeCompare(b.fullName);
+      return statDifference || leagueData.players.indexOf(a) - leagueData.players.indexOf(b);
     });
 
     leaderboardBody.innerHTML = sortedPlayers
@@ -208,6 +291,7 @@ function setupLeaderboardSorting() {
           <tr>
             <td><span class="rank ${rankClasses[index]}">${index + 1}</span></td>
             <td><a class="player-link" href="player.html?name=${player.key}">${player.fullName}</a></td>
+            <td>${player.jersey === "N/A" ? "N/A" : `#${player.jersey}`}</td>
             <td>${player.gp}</td>
             <td>${player.wins}</td>
             <td>${player.goals}</td>
@@ -219,6 +303,8 @@ function setupLeaderboardSorting() {
       .join("");
   }
 
+  renderLeaderboard();
+
   sortButtons.forEach((button) => {
     button.addEventListener("click", () => {
       sortButtons.forEach((item) => item.classList.remove("active"));
@@ -228,4 +314,7 @@ function setupLeaderboardSorting() {
   });
 }
 
+renderNewsFeed();
+renderAwards();
+renderInjuries();
 setupLeaderboardSorting();

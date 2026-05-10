@@ -181,6 +181,7 @@ body::before {
 .news-card,
 .prediction-card,
 .awards-card,
+.injuries-card,
 .schedule-card,
 .booking-panel {
   border: 1px solid var(--line);
@@ -327,7 +328,14 @@ h2 {
 .schedule-card {
   padding: clamp(18px, 3vw, 30px);
   border-radius: 28px;
+  margin-bottom: 24px;
   animation: riseIn 600ms 230ms ease both;
+}
+
+.injuries-card {
+  padding: clamp(18px, 3vw, 30px);
+  border-radius: 28px;
+  animation: riseIn 600ms 250ms ease both;
 }
 
 .lead-stats,
@@ -420,6 +428,7 @@ h2 {
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.045);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  text-align: center;
   transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease, background 180ms ease;
 }
 
@@ -454,13 +463,15 @@ h2 {
 }
 
 .prediction-list,
-.awards-grid {
+.awards-grid,
+.injury-list {
   display: grid;
   gap: 14px;
 }
 
 .prediction-item,
-.award-item {
+.award-item,
+.injury-item {
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.09);
@@ -471,7 +482,8 @@ h2 {
 }
 
 .prediction-item:hover,
-.award-item:hover {
+.award-item:hover,
+.injury-item:hover {
   border-color: rgba(23, 241, 255, 0.34);
   background: rgba(12, 23, 38, 0.72);
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28), 0 0 22px rgba(23, 241, 255, 0.12);
@@ -567,6 +579,58 @@ h2 {
 .award-item strong {
   color: var(--cyan);
   font-size: 1.45rem;
+}
+
+.award-list p {
+  margin: 10px 0 0;
+  color: #a9bbcf;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.award-list b {
+  color: var(--lime);
+}
+
+.injury-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.injury-item {
+  min-height: 128px;
+  padding: 18px;
+}
+
+.injury-item span {
+  color: var(--cyan);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.injury-item strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--text);
+  font-size: 1.1rem;
+}
+
+.injury-item p {
+  margin: 8px 0 0;
+  color: #a9bbcf;
+  font-weight: 700;
+}
+
+.injury-item em {
+  display: inline-flex;
+  margin-top: 12px;
+  padding: 7px 10px;
+  border: 1px solid rgba(167, 255, 69, 0.28);
+  border-radius: 999px;
+  color: var(--lime);
+  background: rgba(167, 255, 69, 0.08);
+  font-style: normal;
+  font-size: 0.78rem;
+  font-weight: 900;
 }
 
 .news-item {
@@ -670,7 +734,8 @@ h2 {
 
 .final-score {
   display: block;
-  justify-self: center;
+  justify-self: start;
+  transform: translateX(-8px);
   padding: 10px 12px;
   border: 1px solid rgba(23, 241, 255, 0.2);
   border-radius: 14px;
@@ -757,7 +822,7 @@ h2 {
 
 table {
   width: 100%;
-  min-width: 760px;
+  min-width: 860px;
   border-collapse: collapse;
 }
 
@@ -813,6 +878,81 @@ td {
 .player-link:hover {
   color: var(--cyan);
   text-shadow: 0 0 16px rgba(23, 241, 255, 0.5);
+}
+
+.compare-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  margin-top: 18px;
+  padding: 0 18px;
+  border: 1px solid rgba(255, 61, 242, 0.34);
+  border-radius: 999px;
+  color: #ffc8fb;
+  background: rgba(255, 61, 242, 0.1);
+  text-decoration: none;
+  font-weight: 900;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.compare-button:hover {
+  border-color: rgba(255, 61, 242, 0.6);
+  color: var(--text);
+  background: rgba(255, 61, 242, 0.18);
+  box-shadow: 0 0 18px rgba(255, 61, 242, 0.2);
+  transform: translateY(-1px);
+}
+
+.versus-rows {
+  display: grid;
+  gap: 10px;
+}
+
+.versus-row {
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) minmax(120px, 0.75fr) minmax(110px, 1fr);
+  align-items: center;
+  min-height: 58px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.versus-left,
+.versus-right {
+  color: var(--text);
+  font-size: 1.06rem;
+  font-weight: 900;
+}
+
+.versus-left {
+  text-align: left;
+}
+
+.versus-name {
+  color: #9fb2c8;
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.versus-right {
+  text-align: right;
+}
+
+.stat-better {
+  color: var(--lime);
+}
+
+.stat-worse {
+  color: #ff7b8a;
+}
+
+.stat-tie {
+  color: #b8c4d2;
 }
 
 td:not(:nth-child(2)),
@@ -881,7 +1021,8 @@ tbody tr:hover .rank {
   .efficiency-stats,
   .prediction-top,
   .prediction-stats,
-  .awards-grid {
+  .awards-grid,
+  .injury-list {
     grid-template-columns: 1fr;
   }
 
