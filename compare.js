@@ -1,10 +1,11 @@
 const data = window.MAIHL_DATA;
 const playerASelect = document.querySelector("#player-a");
 const playerBSelect = document.querySelector("#player-b");
+const matchupBanner = document.querySelector("#compare-matchup-banner");
 const compareResult = document.querySelector("#compare-result");
 
 function optionLabel(player, selectedKey) {
-  return `${player.key === selectedKey ? "✓ " : ""}${player.fullName}`;
+  return `${player.key === selectedKey ? "\u2713 " : ""}${player.fullName}`;
 }
 
 function fillSelect(select, selectedKey) {
@@ -72,10 +73,68 @@ function getPrediction(leftPlayer, rightPlayer) {
   return { predicted, chance, leftChance, rightChance };
 }
 
+function ovrTier(player) {
+  const rating = Number(player.overall);
+
+  if (!rating) {
+    return "ovr-na";
+  }
+
+  if (rating === 100) {
+    return "ovr-legendary";
+  }
+
+  if (rating >= 90) {
+    return `ovr-gold${rating >= 95 ? " ovr-cracked" : ""}`;
+  }
+
+  if (rating >= 80) {
+    return "ovr-blue";
+  }
+
+  if (rating >= 70) {
+    return "ovr-silver";
+  }
+
+  if (rating >= 60) {
+    return "ovr-bronze";
+  }
+
+  return "ovr-na";
+}
+
+function ovrStyle(player) {
+  const rating = Number(player.overall) || 0;
+
+  if (rating >= 90 && rating < 100) {
+    const scale = Math.min(1, Math.max(0, (rating - 90) / 9));
+    const border = (0.48 + scale * 0.34).toFixed(2);
+    const fill = (0.22 + scale * 0.18).toFixed(2);
+    const spot = (0.16 + scale * 0.22).toFixed(2);
+    const glow = (0.22 + scale * 0.32).toFixed(2);
+    const outer = (0.08 + scale * 0.14).toFixed(2);
+    const blur = Math.round(22 + scale * 22);
+    return `--ovr-border-alpha: ${border}; --ovr-fill-alpha: ${fill}; --ovr-spot-alpha: ${spot}; --ovr-glow-alpha: ${glow}; --ovr-glow-blur: ${blur}px; --ovr-outer-alpha: ${outer};`;
+  }
+
+  return "";
+}
+
+function ovrBadge(player) {
+  const label = player.overall ? `${player.overall} <small>OVR</small>` : `N/A <small>OVR</small>`;
+  return `<strong class="ovr-badge ${ovrTier(player)}" style="${ovrStyle(player)}">${label}</strong>`;
+}
+
 function renderComparison() {
   const leftPlayer = data.players.find((player) => player.key === playerASelect.value);
   const rightPlayer = data.players.find((player) => player.key === playerBSelect.value);
   const prediction = getPrediction(leftPlayer, rightPlayer);
+
+  matchupBanner.innerHTML = `
+    <span>${leftPlayer.fullName}</span>
+    <strong>VS</strong>
+    <span>${rightPlayer.fullName}</span>
+  `;
 
   compareResult.innerHTML = `
     <section class="compare-section">
@@ -100,7 +159,7 @@ function renderComparison() {
       <div class="rating-grid">
         <article>
           <span>${leftPlayer.fullName}</span>
-          <strong>${leftPlayer.overall || "N/A"} OVR</strong>
+          ${ovrBadge(leftPlayer)}
           <em>${prediction.leftChance}% win chance</em>
         </article>
         <article class="winner-prediction">
@@ -110,7 +169,7 @@ function renderComparison() {
         </article>
         <article>
           <span>${rightPlayer.fullName}</span>
-          <strong>${rightPlayer.overall || "N/A"} OVR</strong>
+          ${ovrBadge(rightPlayer)}
           <em>${prediction.rightChance}% win chance</em>
         </article>
       </div>

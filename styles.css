@@ -56,6 +56,33 @@ body {
   }
 }
 
+@keyframes legendaryOvrPulse {
+  0%,
+  100% {
+    filter: saturate(1);
+    box-shadow:
+      0 0 18px rgba(255, 214, 76, 0.44),
+      0 0 42px rgba(255, 184, 76, 0.2);
+  }
+
+  50% {
+    filter: saturate(1.35);
+    box-shadow:
+      0 0 26px rgba(255, 242, 115, 0.75),
+      0 0 66px rgba(255, 184, 76, 0.34);
+  }
+}
+
+@keyframes badgeShine {
+  from {
+    transform: translateX(-140%) skewX(-16deg);
+  }
+
+  to {
+    transform: translateX(160%) skewX(-16deg);
+  }
+}
+
 @keyframes scanLine {
   from {
     transform: translateX(-120%);
@@ -157,6 +184,132 @@ body::before {
   color: #051018;
   background: linear-gradient(135deg, var(--cyan), var(--lime));
   transform: translateY(-1px);
+}
+
+.ovr-badge,
+.profile-badges .ovr-badge,
+.player-list-row .ovr-badge,
+.rating-grid .ovr-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 92px;
+  min-height: 40px;
+  padding: 9px 13px;
+  overflow: hidden;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 14px;
+  color: #a9bbcf;
+  background: rgba(255, 255, 255, 0.055);
+  font-weight: 950;
+  line-height: 1;
+  text-align: center;
+  isolation: isolate;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.06);
+}
+
+.ovr-badge small,
+.player-list-row .ovr-badge small,
+.rating-grid .ovr-badge small {
+  display: block;
+  margin-top: 4px;
+  color: currentColor;
+  font-size: 0.62rem;
+  opacity: 0.78;
+}
+
+.ovr-na,
+.profile-badges .ovr-badge.ovr-na,
+.player-list-row .ovr-badge.ovr-na,
+.rating-grid .ovr-badge.ovr-na {
+  border-color: rgba(159, 178, 200, 0.16);
+  color: #9fb2c8;
+  background: rgba(159, 178, 200, 0.06);
+}
+
+.ovr-bronze,
+.profile-badges .ovr-badge.ovr-bronze,
+.player-list-row .ovr-badge.ovr-bronze,
+.rating-grid .ovr-badge.ovr-bronze {
+  border-color: rgba(150, 89, 48, 0.48);
+  color: #d7a071;
+  background: linear-gradient(135deg, rgba(95, 50, 28, 0.62), rgba(46, 25, 17, 0.7));
+  box-shadow: 0 0 12px rgba(166, 91, 42, 0.16);
+}
+
+.ovr-silver,
+.profile-badges .ovr-badge.ovr-silver,
+.player-list-row .ovr-badge.ovr-silver,
+.rating-grid .ovr-badge.ovr-silver {
+  border-color: rgba(220, 231, 242, 0.52);
+  color: #edf5ff;
+  background: linear-gradient(135deg, rgba(242, 247, 255, 0.2), rgba(116, 132, 152, 0.14));
+  box-shadow: 0 0 15px rgba(220, 231, 242, 0.14);
+}
+
+.ovr-silver::after,
+.profile-badges .ovr-badge.ovr-silver::after,
+.player-list-row .ovr-badge.ovr-silver::after,
+.rating-grid .ovr-badge.ovr-silver::after {
+  position: absolute;
+  inset: -20% auto -20% -45%;
+  z-index: -1;
+  width: 42%;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.34), transparent);
+  animation: badgeShine 4.8s ease-in-out infinite;
+}
+
+.ovr-blue,
+.profile-badges .ovr-badge.ovr-blue,
+.player-list-row .ovr-badge.ovr-blue,
+.rating-grid .ovr-badge.ovr-blue {
+  border-color: rgba(23, 241, 255, 0.58);
+  color: #c8fbff;
+  background: linear-gradient(135deg, rgba(23, 241, 255, 0.2), rgba(33, 96, 255, 0.12));
+  box-shadow:
+    0 0 18px rgba(23, 241, 255, 0.22),
+    0 0 34px rgba(33, 96, 255, 0.12);
+}
+
+.ovr-gold,
+.profile-badges .ovr-badge.ovr-gold,
+.player-list-row .ovr-badge.ovr-gold,
+.rating-grid .ovr-badge.ovr-gold {
+  --ovr-border-alpha: 0.5;
+  --ovr-fill-alpha: 0.24;
+  --ovr-spot-alpha: 0.16;
+  --ovr-glow-alpha: 0.24;
+  --ovr-glow-blur: 24px;
+  --ovr-outer-alpha: 0.08;
+  border-color: rgba(255, 218, 84, var(--ovr-border-alpha));
+  color: #ffef9a;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255, 244, 154, var(--ovr-spot-alpha)), transparent 42%),
+    linear-gradient(135deg, rgba(255, 204, 64, var(--ovr-fill-alpha)), rgba(109, 75, 18, 0.4));
+  box-shadow:
+    0 0 var(--ovr-glow-blur) rgba(255, 211, 72, var(--ovr-glow-alpha)),
+    0 0 42px rgba(255, 184, 76, var(--ovr-outer-alpha));
+}
+
+.ovr-legendary,
+.profile-badges .ovr-badge.ovr-legendary,
+.player-list-row .ovr-badge.ovr-legendary,
+.rating-grid .ovr-badge.ovr-legendary {
+  border-color: rgba(255, 244, 119, 0.95);
+  color: #fff9b7;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.28), transparent 32%),
+    linear-gradient(135deg, rgba(255, 232, 67, 0.44), rgba(255, 170, 0, 0.22));
+  animation: legendaryOvrPulse 1.9s ease-in-out infinite;
+}
+
+.ovr-cracked {
+  background-image:
+    linear-gradient(115deg, transparent 0 44%, rgba(255, 255, 255, 0.24) 45% 46%, transparent 47%),
+    linear-gradient(28deg, transparent 0 58%, rgba(23, 241, 255, 0.18) 59% 60%, transparent 61%);
 }
 
 .page-shell {

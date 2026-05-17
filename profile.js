@@ -3,10 +3,60 @@ const params = new URLSearchParams(window.location.search);
 const requestedName = params.get("name") || "Muhummud";
 const player = data.players.find((item) => item.key === requestedName) || data.players[0];
 
+function ovrTier(item) {
+  const rating = Number(item.overall);
+
+  if (!rating) {
+    return "ovr-na";
+  }
+
+  if (rating === 100) {
+    return "ovr-legendary";
+  }
+
+  if (rating >= 90) {
+    return `ovr-gold${rating >= 95 ? " ovr-cracked" : ""}`;
+  }
+
+  if (rating >= 80) {
+    return "ovr-blue";
+  }
+
+  if (rating >= 70) {
+    return "ovr-silver";
+  }
+
+  if (rating >= 60) {
+    return "ovr-bronze";
+  }
+
+  return "ovr-na";
+}
+
+function ovrStyle(item) {
+  const rating = Number(item.overall) || 0;
+
+  if (rating >= 90 && rating < 100) {
+    const scale = Math.min(1, Math.max(0, (rating - 90) / 9));
+    const border = (0.48 + scale * 0.34).toFixed(2);
+    const fill = (0.22 + scale * 0.18).toFixed(2);
+    const spot = (0.16 + scale * 0.22).toFixed(2);
+    const glow = (0.22 + scale * 0.32).toFixed(2);
+    const outer = (0.08 + scale * 0.14).toFixed(2);
+    const blur = Math.round(22 + scale * 22);
+    return `--ovr-border-alpha: ${border}; --ovr-fill-alpha: ${fill}; --ovr-spot-alpha: ${spot}; --ovr-glow-alpha: ${glow}; --ovr-glow-blur: ${blur}px; --ovr-outer-alpha: ${outer};`;
+  }
+
+  return "";
+}
+
 document.title = `${player.fullName} | MAIHL Player Profile`;
 document.querySelector("#player-name").innerHTML = `<span class="profile-flag">${player.countryFlag}</span> ${player.fullName}`;
 document.querySelector("#player-number").textContent = player.jersey === "N/A" ? "#N/A" : `#${player.jersey}`;
-document.querySelector("#player-overall").textContent = player.overall ? `${player.overall} OVR` : "N/A OVR";
+const playerOverall = document.querySelector("#player-overall");
+playerOverall.className = `ovr-badge ${ovrTier(player)}`;
+playerOverall.setAttribute("style", ovrStyle(player));
+playerOverall.innerHTML = player.overall ? `${player.overall} <small>OVR</small>` : `N/A <small>OVR</small>`;
 
 const stats = [
   ["GP", player.gp],
